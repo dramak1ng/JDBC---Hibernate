@@ -92,12 +92,12 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         List<User> users = null;
         try (Session session = Util.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-
             users = session.createQuery("FROM User", User.class).list();
+            session.beginTransaction().commit();
         } catch (HibernateException e) {
             logger.info("Произошла ошибка");
-            if (transaction != null) transaction.rollback();
+
+
 
         }
         return users;
@@ -115,13 +115,13 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void cleanUsersTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
+            Transaction transaction = session.beginTransaction();
             try {
                 session.createSQLQuery("Truncate table users").executeUpdate();
-                tx.commit();
+                transaction.commit();
             } catch (HibernateException e) {
                 logger.info("Произошла ошибка");
-                tx.rollback();
+                transaction.rollback();
             }
         }
     }

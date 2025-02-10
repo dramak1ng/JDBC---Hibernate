@@ -16,7 +16,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public class Util {
-    private static final Logger log = Logger.getLogger(Util.class.getName());
+    private static final Logger logger = Logger.getLogger(Util.class.getName());
 
     private static String url;
     private static String username;
@@ -35,7 +35,7 @@ public class Util {
 
                 sessionFactory = config.buildSessionFactory(builder.build());
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                logger.info("Произошла ошибка");
             }
         }
         return sessionFactory;
@@ -61,9 +61,9 @@ public class Util {
         try {
             connection = DriverManager.getConnection(url, username, password);
 
-            log.info("установлено.");
+            logger.info("установлено.");
         } catch (SQLException e) {
-            log.info("oшибка при подключении к базе данных: ");
+            logger.info("oшибка при подключении к базе данных: ");
             e.printStackTrace();
 
         }
